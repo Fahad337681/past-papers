@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Past Papers Library</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>Past Papers Library</h1>
+          </div>
+          <nav class="nav">
+            <a href="#" class="nav-link active">Home</a>
+            <a href="#papers" class="nav-link">Papers</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="/admin" class="nav-link admin-link">
+              <i class="fas fa-user-shield"></i>
+              Admin
+            </a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <h2>Access Past Papers</h2>
+            <p>
+              Find and download past papers for your studies. Browse by subject,
+              year, and exam type.
+            </p>
+            <div class="search-box">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search papers by subject, year, or exam type..."
+              />
+              <button id="searchBtn" aria-label="Search papers">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="stats-section">
+        <div class="container">
+          <h3>Library Statistics</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number" id="totalPapers">0</div>
+              <div class="stat-label">Total Papers</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="totalSubjects">0</div>
+              <div class="stat-label">Subjects</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="totalYears">0</div>
+              <div class="stat-label">Years Covered</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="totalDownloads">0</div>
+              <div class="stat-label">Downloads</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="papers" class="papers-section">
+        <div class="container">
+          <div class="section-header">
+            <h3>Available Papers</h3>
+            <div class="filters">
+              <select id="subjectFilter">
+                <option value="">All Subjects</option>
+              </select>
+              <select id="yearFilter">
+                <option value="">All Years</option>
+              </select>
+              <select id="examTypeFilter">
+                <option value="">All Exam Types</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions">
+            <a href="#" class="quick-action-btn" id="recentPapers">
+              <i class="fas fa-clock"></i> Recent Papers
+            </a>
+            <a href="#" class="quick-action-btn" id="popularPapers">
+              <i class="fas fa-star"></i> Popular Papers
+            </a>
+            <a href="#" class="quick-action-btn" id="newestPapers">
+              <i class="fas fa-plus"></i> Newest Papers
+            </a>
+            <a href="#" class="quick-action-btn" id="downloadAll">
+              <i class="fas fa-download"></i> Download All
+            </a>
+          </div>
+
+          <!-- Advanced Search -->
+          <div
+            class="advanced-search"
+            id="advancedSearch"
+            style="display: none"
+          >
+            <h4><i class="fas fa-search-plus"></i> Advanced Search</h4>
+            <div class="search-filters">
+              <div class="form-group">
+                <label for="advancedSubject">Subject</label>
+                <input
+                  type="text"
+                  id="advancedSubject"
+                  placeholder="Enter subject name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="advancedYear">Year Range</label>
+                <select id="advancedYear" aria-label="Select year range">
+                  <option value="">Any Year</option>
+                  <option value="2020-2024">2020-2024</option>
+                  <option value="2015-2019">2015-2019</option>
+                  <option value="2010-2014">2010-2014</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="advancedExamType">Exam Type</label>
+                <select id="advancedExamType" aria-label="Select exam type">
+                  <option value="">Any Type</option>
+                  <option value="Mid Term">Mid Term</option>
+                  <option value="Final Term">Final Term</option>
+                  <option value="Annual">Annual</option>
+                  <option value="Supplementary">Supplementary</option>
+                  <option value="Mock Test">Mock Test</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="advancedFileType">File Type</label>
+                <select id="advancedFileType" aria-label="Select file type">
+                  <option value="">Any Format</option>
+                  <option value="pdf">PDF</option>
+                  <option value="doc">DOC</option>
+                  <option value="docx">DOCX</option>
+                  <option value="image">Images</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="advancedSearchBtn">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
+
+          <div class="papers-grid" id="papersGrid">
+            <!-- Papers will be loaded here -->
+          </div>
+
+          <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading papers...</p>
+          </div>
+
+          <div class="no-papers" id="noPapers" style="display: none">
+            <i class="fas fa-file-alt"></i>
+            <h4>No papers found</h4>
+            <p>No papers match your search criteria.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="about-section">
+        <div class="container">
+          <div class="about-content">
+            <h3>About Our Library</h3>
+            <p>
+              We provide a comprehensive collection of past papers to help
+              students prepare for their exams. Our library includes papers from
+              various subjects, years, and exam types.
+            </p>
+            <div class="features">
+              <div class="feature">
+                <i class="fas fa-search"></i>
+                <h4>Easy Search</h4>
+                <p>
+                  Find papers quickly with our advanced search and filter
+                  options.
+                </p>
+              </div>
+              <div class="feature">
+                <i class="fas fa-download"></i>
+                <h4>Free Downloads</h4>
+                <p>Download papers for free to study at your own pace.</p>
+              </div>
+              <div class="feature">
+                <i class="fas fa-mobile-alt"></i>
+                <h4>Mobile Friendly</h4>
+                <p>Access papers from any device, anywhere, anytime.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h4>Past Papers Library</h4>
+            <p>Your trusted source for educational resources.</p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#papers">Papers</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="/admin">Admin</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contact</h4>
+            <p>Email: info@pastpapers.com</p>
+            <p>Phone: +1234567890</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Past Papers Library. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

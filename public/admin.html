@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Past Papers Library</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-user-shield"></i>
+            <h1>Admin Panel</h1>
+          </div>
+          <nav class="nav">
+            <a href="/" class="nav-link">
+              <i class="fas fa-home"></i>
+              Back to Site
+            </a>
+            <button id="logoutBtn" class="nav-link logout-btn">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="container">
+        <div class="admin-grid">
+          <!-- Upload Section -->
+          <section class="upload-section">
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fas fa-upload"></i> Upload New Paper</h3>
+              </div>
+              <div class="card-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      required
+                      placeholder="e.g., Mathematics, Physics, Chemistry"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="year">Year *</label>
+                    <select id="year" name="year" required>
+                      <option value="">Select Year</option>
+                      <option value="2024">2024</option>
+                      <option value="2023">2023</option>
+                      <option value="2022">2022</option>
+                      <option value="2021">2021</option>
+                      <option value="2020">2020</option>
+                      <option value="2019">2019</option>
+                      <option value="2018">2018</option>
+                      <option value="2017">2017</option>
+                      <option value="2016">2016</option>
+                      <option value="2015">2015</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="examType">Exam Type *</label>
+                    <select id="examType" name="examType" required>
+                      <option value="">Select Exam Type</option>
+                      <option value="Mid Term">Mid Term</option>
+                      <option value="Final Term">Final Term</option>
+                      <option value="Annual">Annual</option>
+                      <option value="Supplementary">Supplementary</option>
+                      <option value="Mock Test">Mock Test</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="paper">Paper File *</label>
+                    <div class="file-upload">
+                      <input
+                        type="file"
+                        id="paper"
+                        name="paper"
+                        required
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                      />
+                      <div class="file-upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose file or drag here</span>
+                        <small
+                          >Supported formats: PDF, DOC, DOCX, JPG, JPEG, PNG
+                          (Max: 10MB)</small
+                        >
+                      </div>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-upload"></i>
+                    Upload Paper
+                  </button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <!-- Papers Management Section -->
+          <section class="papers-management">
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fas fa-list"></i> Manage Papers</h3>
+                <div class="header-actions">
+                  <button id="exportBtn" class="btn btn-secondary">
+                    <i class="fas fa-file-export"></i>
+                    Export Data
+                  </button>
+                  <button id="refreshBtn" class="btn btn-secondary">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="papers-table-container">
+                  <table class="papers-table">
+                    <thead>
+                      <tr>
+                        <th>Subject</th>
+                        <th>Year</th>
+                        <th>Exam Type</th>
+                        <th>File Name</th>
+                        <th>Upload Date</th>
+                        <th>Downloads</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="papersTableBody">
+                      <!-- Papers will be loaded here -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="loading" id="tableLoading">
+                  <div class="spinner"></div>
+                  <p>Loading papers...</p>
+                </div>
+
+                <div class="no-papers" id="tableNoPapers" style="display: none">
+                  <i class="fas fa-file-alt"></i>
+                  <h4>No papers uploaded yet</h4>
+                  <p>Upload your first paper using the form above.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Upload Progress Modal -->
+    <div id="uploadModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Uploading Paper...</h3>
+        </div>
+        <div class="modal-body">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p id="uploadStatus">Preparing upload...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Confirm Delete</h3>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete this paper? This action cannot be
+            undone.
+          </p>
+          <div class="modal-actions">
+            <button id="cancelDelete" class="btn btn-secondary">Cancel</button>
+            <button id="confirmDelete" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
